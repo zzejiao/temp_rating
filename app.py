@@ -30,7 +30,6 @@ repo = g.get_repo(repo_name)
 with open("week_5_generation/Response_by_jinaai_jina-embeddings-v3.md", "r") as f:
     examples = f.read().split("\n\n---\n\n")
 
-examples = examples[:5]
 # ---------- 当前任务 ----------
 col1, col2 = st.columns([2, 3])
 
