@@ -39,3 +39,57 @@ id,comment,Factuality_score,Completeness_score,Safety_score,Clnical Applicabilit
 32,,1,1,1,5
 33,,1,1,1,5
 34,,1,1,1,5
+1,,5,5,5,5
+2,,5,5,5,5
+3,"Overly inclusive as it talks about bupropion, which is recommended for somatic symptoms of fatigue—whereas the question specifically asked about pain.",5,4,5,5
+4,"Inaccurate response. The right answer is bupropion as described in table 3.6, but the chatbot's response does not address bupropion at all.",1,4,4,2
+5,Response does not mention IPT or behavioural activation,4,3,5,5
+6,lists acupuncture first which could be misleading,5,4,5,5
+7,,5,5,5,5
+8,,5,5,5,5
+9,"although the response generated is not completely inaccurate, it does not mention psychotherapy as outlined in figure 7.1",3,3,5,5
+10,"switching to another antidepressant is preferred over adding an adjunctive medication as there are tolerability issues. According to figure 7.1, ""add adjuvant medication especially it there is a partial response to initial antidepressant and it is well-tolerated""",4,5,4,5
+11,Response mentions adjunctive strategies but does not specifically say aripiprazole or brexpiprazole.,4,3,5,5
+12,"Query mentioned they've already tried adding adjunctive pharmacotherapy, but response primarily talks about medication augmentation. Response does not mention ECT which is the correct answer.",2,1,4,4
+13,,5,5,5,5
+14,the response does not mention vortioxetine which is another one of the medications with low/minimal risk. Agomelatine is not available in Canada.,4,4,5,5
+15,,5,5,5,5
+1,,5,5,5,5
+1,,5,5,5,5
+2,,5,5,5,5
+1,,1,1,1,1
+1,,1,1,1,1
+2,,1,1,1,1
+3,the line about bupropion is less relevant as the query was specifically about somatic symptoms of pain,5,4,5,5
+4,incorrect as the response does not talk about bupropion at all,1,1,4,3
+5,response does not address IPT or behavioural activation,4,3,4,4
+1,,1,1,1,1
+2,,1,1,1,1
+6,response should have addressed st. john's wort first,4,4,5,5
+7,response should have addressed st. john's wort first,5,5,5,5
+8,,5,5,5,5
+9,not the right answer. figure 7.1 shows adding psychological treatment as the next step before switching or adding an adjunctive medication,2,2,5,4
+10,switching to another antidepressant is the right answer as the question specifically mentioned that there are tolerability issues,3,3,5,4
+11,response does not specifically mention aripiprazole or brexpiprazole,4,3,5,4
+12,response does not address ECT which is the correct answer,1,1,4,3
+13,,5,5,5,5
+14,response did not include vortioxetine. agomelatine is not available in canada,4,3,4,5
+15,,5,5,5,5
+16,,5,5,5,5
+17,response is more generalized ie. not specific to citalopram. It also does not talk about QTc monitoring at all.,2,2,4,2
+18,"according to table 3.5, escitalopram is less favourable regarding sexual dysfunction.",3,4,5,5
+19,,5,5,5,5
+20,the response does not mention venlafaxine-XR. Table 3.5 lists venlafaxine as more favourable amongst SNRIs regarding efficacy. ,2,2,5,3
+21,response doesn't mention that it was published in 2024,5,4,5,5
+22,,5,5,5,5
+23,no mention about the 43 clinicians. response has some details irrelevant to the question being asked.,4,4,5,5
+24,does not answer the question,1,1,4,2
+25,,5,5,5,5
+26,,5,5,5,5
+27,,5,5,5,5
+28,"the response says the guidelines do not explicitly mention the risk of constipation for paroxetine, but it does. Also the response diverges and talks about drug interaction risk for paroxetine.",2,2,4,3
+29,response does not address privacy and security of the tool and the potential for providing harmful or inaccurate advice,5,3,5,5
+30,"response makes sense, however it does not address measurement based care. But this could be mitigated by asking better questions",4,4,5,5
+31,,5,5,5,5
+32,does not give specific dosing guidance (ie. increase to escitalopram 20mg),4,4,5,4
+33,,5,5,5,5
