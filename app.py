@@ -40,7 +40,7 @@ credentials = {
     "type": st.secrets["gcp_service_account"]["type"],
     "project_id": st.secrets["gcp_service_account"]["project_id"],
     "private_key_id": st.secrets["gcp_service_account"]["private_key_id"],
-    "private_key": st.secrets["gcp_service_account"]["private_key"],
+    "private_key": st.secrets["gcp_service_account"]["private_key"].replace("\\n", "\n"),
     "client_email": st.secrets["gcp_service_account"]["client_email"],
     "client_id": st.secrets["gcp_service_account"]["client_id"],
     "auth_uri": st.secrets["gcp_service_account"]["auth_uri"],
