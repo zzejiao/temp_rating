@@ -1,7 +1,10 @@
 import streamlit as st
 import pandas as pd
 import os
-from github import Github
+# from github import Github
+import gspread
+from google.oauth2.service_account import Credentials
+from datetime import datetime
 
 
 st.set_page_config(layout="wide")
@@ -21,10 +24,41 @@ DATA_FILE = "Task2_jinaai_jina-embeddings-v3.csv"  # 保存评分的CSV文件路
 repo_name = "zzejiao/temp_rating"
 target_path = DATA_FILE
 
-GITHUB_TOKEN = st.secrets["GITHUB_TOKEN"]
+# GITHUB_TOKEN = st.secrets["GITHUB_TOKEN"]
 
-g = Github(GITHUB_TOKEN)
-repo = g.get_repo(repo_name)
+# g = Github(GITHUB_TOKEN)
+# repo = g.get_repo(repo_name)
+
+# ---------- Google Sheets Configuration ----------
+SCOPES = [
+    'https://www.googleapis.com/auth/spreadsheets',
+    'https://www.googleapis.com/auth/drive'
+]
+
+# Load credentials from your service account file, use Streamlit secrets
+credentials = {
+    "type": st.secrets["gcp_service_account"]["type"],
+    "project_id": st.secrets["gcp_service_account"]["project_id"],
+    "private_key_id": st.secrets["gcp_service_account"]["private_key_id"],
+    "private_key": st.secrets["gcp_service_account"]["private_key"],
+    "client_email": st.secrets["gcp_service_account"]["client_email"],
+    "client_id": st.secrets["gcp_service_account"]["client_id"],
+    "auth_uri": st.secrets["gcp_service_account"]["auth_uri"],
+    "token_uri": st.secrets["gcp_service_account"]["token_uri"],
+    "auth_provider_x509_cert_url": st.secrets["gcp_service_account"]["auth_provider_x509_cert_url"],
+    "client_x509_cert_url": st.secrets["gcp_service_account"]["client_x509_cert_url"]
+}
+
+credentials = Credentials.from_service_account_info(credentials, scopes=SCOPES)
+
+
+# Create a Google Sheets client
+gc = gspread.authorize(credentials)
+
+# Open your Google Sheet by its title or URL
+# Replace 'Your Sheet Name' with your actual sheet name or use sheet URL
+SHEET_URL = "https://docs.google.com/spreadsheets/d/1ztIBidaWHXKeKuNX6PDvS6RE9i_F0KL6jF_fbhYZP7c/edit?gid=179949384#gid=179949384"  # You'll need to replace this
+worksheet = gc.open_by_url(SHEET_URL).sheet1
 
 # ---------- 示例数据 ----------
 with open("week_5_generation/Response_by_jinaai_jina-embeddings-v3.md", "r") as f:
@@ -68,48 +102,29 @@ with col2:
     if st.button("✅ Submit Rating"):
         result = {
             "id": st.session_state.index + 1,
+            "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
             "comment": comment
         }
         for dim in dimensions:
             result[f"{dim}_score"] = scores[dim]
 
-        # 写入 CSV 文件
-        df = pd.DataFrame([result])
-        if os.path.exists(DATA_FILE):
-            df.to_csv(DATA_FILE, mode="a", header=False, index=False)
-        else:
-            df.to_csv(DATA_FILE, index=False)
+        # Write to Google Sheet
+        try:
+            # Get all existing values
+            existing_values = worksheet.get_all_values()
+            
+            # If sheet is empty, write headers first
+            if not existing_values:
+                headers = list(result.keys())
+                worksheet.append_row(headers)
+            
+            # Append the new row
+            worksheet.append_row(list(result.values()))
+            
+            st.success("This Rating is submitted to Google Sheet!")
+        except Exception as e:
+            st.error(f"Failed to write to Google Sheet: {str(e)}")
 
-        st.success("🎉 all ratings submitted")
-
-        # 进入下一条
-        if st.session_state.index < len(examples) - 1:
-            st.session_state.index += 1
-            st.rerun()
-        else:
-            st.markdown("### 🏁 all the queries done! Thanks for ")
-            with open(DATA_FILE, "rb") as f:
-                content = f.read()
-
-            # 3. 检查文件是否存在于 GitHub 仓库
-            try:
-                contents = repo.get_contents(target_path)
-                # 4. 如果存在，更新文件
-                repo.update_file(
-                    path=target_path,
-                    message=f"Update {DATA_FILE} via Streamlit",
-                    content=content,
-                    sha=contents.sha
-                )
-                st.success(f"✅ Updated {DATA_FILE} on GitHub.")
-            except:
-                # 5. 如果不存在，创建新文件
-                repo.create_file(
-                    path=target_path,
-                    message=f"Create {DATA_FILE} via Streamlit",
-                    content=content
-                )
-                st.success(f"✅ Created {DATA_FILE} on GitHub.")
             
             
 
