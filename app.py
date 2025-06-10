@@ -66,7 +66,7 @@ gpt_answers = df['GPT_Answer'].tolist()
 response = df['Response'].tolist()
 examples = []
 for i in range(len(questions)):
-    example = "## Question:\n" + questions[i] + "\n\n" + "## Answer As reference:\n" + gpt_answers[i] + "\n\n" + "## Rag system Response:\n" + response[i] + "\n\n"
+    example = f"## Question: {i+1}\n" + questions[i] + "\n\n" + "## Answer As reference:\n" + gpt_answers[i] + "\n\n" + "## Rag system Response:\n" + response[i] + "\n\n"
     examples.append(example)
 
 # ---------- split the page into two columns ----------
@@ -83,14 +83,11 @@ with col1:
         st.rerun()
     
     st.markdown("the results is saved in this [google sheet link](https://docs.google.com/spreadsheets/d/1ztIBidaWHXKeKuNX6PDvS6RE9i_F0KL6jF_fbhYZP7c/edit?gid=179949384#gid=179949384)")
-    st.empty()
     
     example = examples[st.session_state.index]
     st.markdown(f"{example}")
     
-    st.empty()
     
-    correction = st.text_area("💬 Suggested Correction")
 
 
 # ---------- show rating schema ----------
@@ -114,6 +111,7 @@ with col2:
 
     # ---------- comment box ----------
     comment = st.text_area("💬 Comment）")
+    correction = st.text_area("💬 Suggested Correction")
 
     # ---------- submit rating ----------
     if st.button("✅ Submit Rating"):
