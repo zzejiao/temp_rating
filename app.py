@@ -57,7 +57,7 @@ gc = gspread.authorize(credentials)
 
 # Open your Google Sheet by its title or URL
 # Replace 'Your Sheet Name' with your actual sheet name or use sheet URL
-SHEET_URL = "https://docs.google.com/spreadsheets/d/1ztIBidaWHXKeKuNX6PDvS6RE9i_F0KL6jF_fbhYZP7c/edit?gid=179949384#gid=179949384"  # You'll need to replace this
+SHEET_URL = "https://docs.google.com/spreadsheets/d/1ztIBidaWHXKeKuNX6PDvS6RE9i_F0KL6jF_fbhYZP7c/edit?gid=249926695#gid=249926695"  # You'll need to replace this
 worksheet = gc.open_by_url(SHEET_URL).sheet2
 
 # ---------- 示例数据 ----------
