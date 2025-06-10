@@ -56,10 +56,18 @@ SHEET_URL = "https://docs.google.com/spreadsheets/d/1ztIBidaWHXKeKuNX6PDvS6RE9i_
 worksheet = gc.open_by_url(SHEET_URL).worksheet("Kayoung 100 question evaluation")
 
 # ---------- system generation data ----------
-with open("week_5_generation/Response_by_jinaai_jina-embeddings-v3.md", "r") as f:
-    examples = f.read().split("\n\n---\n\n")
+# oepn xlsx file
+file = "week_5_generation/Response_of_Combined_QA_Pairs_by_jinaai-jina-embeddings-v3.xlsx"
+df = pd.read_excel(file, engine='openpyxl')
+df = df[:99]
 
-examples = examples[:-1]
+questions = df['Question'].tolist()
+gpt_answers = df['GPT_Answer'].tolist()
+response = df['Response'].tolist()
+examples = []
+for i in range(len(questions)):
+    example = "## Question:\n" + questions[i] + "\n\n" + "## Answer As reference:\n" + gpt_answers[i] + "\n\n" + "## Rag system Response:\n" + response[i] + "\n\n"
+    examples.append(example)
 
 # ---------- split the page into two columns ----------
 col1, col2 = st.columns([2, 3])
@@ -102,7 +110,7 @@ with col2:
     scores = {}
 
     for dim in dimensions:
-        scores[dim] = st.radio(f"**{dim}** ", [1, 2, 3, 4, 5], horizontal=True, key=dim)
+        scores[dim] = st.radio(f"**{dim}** ", [5,4,3,2,1], horizontal=True, key=dim)
 
     # ---------- comment box ----------
     comment = st.text_area("💬 Comment）")
