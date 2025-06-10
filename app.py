@@ -19,11 +19,6 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 
-# ---------- 配置 ----------
-DATA_FILE = "Task2_jinaai_jina-embeddings-v3.csv"  # 保存评分的CSV文件路径
-repo_name = "zzejiao/temp_rating"
-target_path = DATA_FILE
-
 # GITHUB_TOKEN = st.secrets["GITHUB_TOKEN"]
 
 # g = Github(GITHUB_TOKEN)
@@ -60,12 +55,13 @@ gc = gspread.authorize(credentials)
 SHEET_URL = "https://docs.google.com/spreadsheets/d/1ztIBidaWHXKeKuNX6PDvS6RE9i_F0KL6jF_fbhYZP7c/edit?gid=179949384#gid=179949384"  # You'll need to replace this
 worksheet = gc.open_by_url(SHEET_URL).worksheet("Kayoung 100 question evaluation")
 
-# ---------- 示例数据 ----------
+# ---------- system generation data ----------
 with open("week_5_generation/Response_by_jinaai_jina-embeddings-v3.md", "r") as f:
     examples = f.read().split("\n\n---\n\n")
 
 examples = examples[:-1]
-# ---------- 当前任务 ----------
+
+# ---------- split the page into two columns ----------
 col1, col2 = st.columns([2, 3])
 
 with col1:
@@ -75,8 +71,10 @@ with col1:
 
     example = examples[st.session_state.index]
     st.markdown(f"{example}")
+    
+    correction = st.text_area("💬 Suggested Correction")
 
-# ---------- 多维度打分 ----------
+# ---------- show rating schema ----------
 with col2:
     
     st.markdown("""
@@ -95,18 +93,20 @@ with col2:
     for dim in dimensions:
         scores[dim] = st.radio(f"**{dim}** ", [1, 2, 3, 4, 5], horizontal=True, key=dim)
 
-    # ---------- 评论 ----------
+    # ---------- comment box ----------
     comment = st.text_area("💬 Comment）")
 
-    # ---------- 提交评分 ----------
+    # ---------- submit rating ----------
     if st.button("✅ Submit Rating"):
         result = {
             "id": st.session_state.index + 1,
-            "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-            "comment": comment
+            "comment": comment,
+            "correction": correction,
         }
         for dim in dimensions:
             result[f"{dim}_score"] = scores[dim]
+        
+        result["timestamp"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
         # Write to Google Sheet
         try:
@@ -128,7 +128,7 @@ with col2:
             
             
 
-# ---------- 显示进度 ----------
+# ---------- current progress ----------
 st.markdown(f"📊 Current progress:{st.session_state.index + 1} / {len(examples)}")
 
 
