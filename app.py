@@ -68,11 +68,17 @@ with col1:
 
     if "index" not in st.session_state:
         st.session_state.index = 0
-
+    # ---------- add a button, user can input a number to jump to the query ----------
+    if st.button("Jump to query:"):
+        query_number = st.number_input("Enter the query number", min_value=1, max_value=len(examples), value=st.session_state.index + 1)
+        st.session_state.index = query_number - 1
+        st.rerun()
+        
     example = examples[st.session_state.index]
     st.markdown(f"{example}")
     
     correction = st.text_area("💬 Suggested Correction")
+
 
 # ---------- show rating schema ----------
 with col2:
@@ -132,11 +138,6 @@ with col2:
         else:
             st.markdown("### 🏁 all the queries done! Thanks for your time!")
             
-        # ---------- add a button, user can input a number to jump to the query ----------
-        if st.button("Jump to query"):
-            query_number = st.number_input("Enter the query number", min_value=1, max_value=len(examples), value=st.session_state.index + 1)
-            st.session_state.index = query_number - 1
-            st.rerun()
 
             
             
