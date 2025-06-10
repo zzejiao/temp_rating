@@ -124,6 +124,19 @@ with col2:
             st.success("This Rating is submitted to Google Sheet!")
         except Exception as e:
             st.error(f"Failed to write to Google Sheet: {str(e)}")
+            
+        # ---------- next example ----------
+        if st.session_state.index < len(examples) - 1:
+            st.session_state.index += 1
+            st.rerun()
+        else:
+            st.markdown("### 🏁 all the queries done! Thanks for your time!")
+            
+        # ---------- add a button, user can input a number to jump to the query ----------
+        if st.button("Jump to query"):
+            query_number = st.number_input("Enter the query number", min_value=1, max_value=len(examples), value=st.session_state.index + 1)
+            st.session_state.index = query_number - 1
+            st.rerun()
 
             
             
