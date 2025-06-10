@@ -73,9 +73,14 @@ with col1:
     if st.button("Jump to query"):
         st.session_state.index = query_number - 1
         st.rerun()
-        
+    
+    st.markdown("the results is saved in this [google sheet link](https://docs.google.com/spreadsheets/d/1ztIBidaWHXKeKuNX6PDvS6RE9i_F0KL6jF_fbhYZP7c/edit?gid=179949384#gid=179949384)")
+    st.empty()
+    
     example = examples[st.session_state.index]
     st.markdown(f"{example}")
+    
+    st.empty()
     
     correction = st.text_area("💬 Suggested Correction")
 
